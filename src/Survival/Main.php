@@ -33,10 +33,8 @@ class Main extends PluginBase {
         /** @disregard */
         $this->getCommand("listsurvival")->setExecutor(new ListSurvivalCommand($this), $this);
 
-        $this->getServer()->getPluginManager()->registerEvents(new PlayerQuitEvents($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new PlayerChangeWorldEvent($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new DisablePluginEvent($this), $this);
-        //$this->getServer()->getPluginManager()->registerEvents(new PlayerRespawnEvents($this), $this);
 
         $this->getLogger()->info("Plugin habilitado com sucesso!");
 
