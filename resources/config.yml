@@ -1,0 +1,23 @@
+#   __    __   ______  ________   ______   __    __  _______   __    __   ______    #
+#  |  \  |  \ /      \|        \ /      \ |  \  |  \|       \ |  \  |  \ /      \   #
+#  | $$\ | $$|  $$$$$$\\$$$$$$$$|  $$$$$$\| $$\ | $$| $$$$$$$\| $$  | $$|  $$$$$$\  #
+#  | $$$\| $$| $$__| $$  | $$   | $$__| $$| $$$\| $$| $$__/ $$ \$$\/  $$| $$$\| $$  #
+#  | $$$$\ $$| $$    $$  | $$   | $$    $$| $$$$\ $$| $$    $$  >$$  $$ | $$$$\ $$  #
+#  | $$\$$ $$| $$$$$$$$  | $$   | $$$$$$$$| $$\$$ $$| $$$$$$$\ /  $$$$\ | $$\$$\$$  #
+#  | $$ \$$$$| $$  | $$  | $$   | $$  | $$| $$ \$$$$| $$__/ $$|  $$ \$$\| $$_\$$$$  #
+#  | $$  \$$$| $$  | $$  | $$   | $$  | $$| $$  \$$$| $$    $$| $$  | $$ \$$  \$$$  #
+#   \$$   \$$ \$$   \$$   \$$    \$$   \$$ \$$   \$$ \$$$$$$$  \$$   \$$  \$$$$$$   #
+#                                                                                   #
+#                                                                                   #
+
+#prefix of the plugin messages
+prefix: "§8[§cSurvival§8]§r "
+
+#messages
+items-saved: "§7Items salvos"
+items-restored: "§7Items restaurados"
+set-survival: "§7Mundo definido como survival: {level}"
+not-found: "§7O mundo §c {level} §7não foi econtrado"
+removed-survival: "§7O mundo §a{level} §7foi removido dos mundos survival"
+survival-list: "§7Mundos com a propiedade survival:§a {list}"
+no-survival-worlds: "§7Não existe nenhum mundo com a propiedade survival no momento"
