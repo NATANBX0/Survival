@@ -6,22 +6,24 @@ use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\utils\Config;
 
-class InventoryManager {
+class InventoryManager
+{
 
     private $plugin;
 
-    Public function __construct($plugin)
+    public function __construct($plugin)
     {
         $this->plugin = $plugin;
     }
 
-    public function serializeInv($items) {
+    public function serializeInv($items)
+    {
         $serialized = [];
         $nbt = new NBT(NBT::LITTLE_ENDIAN);
 
-        foreach($items as $slot => $item) {
-            
-            if($item->getId() === Item::AIR) continue;
+        foreach ($items as $slot => $item) {
+
+            if ($item->getId() === Item::AIR) continue;
 
             $data = [
                 "id" => $item->getId(),
@@ -29,7 +31,7 @@ class InventoryManager {
                 "count" => $item->getCount(),
             ];
 
-            if($item->hasCompoundTag()) {
+            if ($item->hasCompoundTag()) {
                 $data["nbt"] = $nbt->write($item->getCompoundTag());
             }
 
@@ -39,17 +41,20 @@ class InventoryManager {
         return $serialized;
     }
 
-    public function deserializeInv($serialized) {
-        
+    public function deserializeInv($serialized)
+    {
+
         $items = [];
         $nbt = new NBT(NBT::LITTLE_ENDIAN);
 
-        foreach($serialized as $slot => $data) {
-            $item = Item::get($data["id"],
-            $data["damage"],
-            $data["count"]);
+        foreach ($serialized as $slot => $data) {
+            $item = Item::get(
+                $data["id"],
+                $data["damage"],
+                $data["count"]
+            );
 
-            if(isset($data["nbt"])) {
+            if (isset($data["nbt"])) {
                 $tag = $nbt->read($data["nbt"]);
 
                 $item->setCompoundTag($tag);
@@ -61,9 +66,9 @@ class InventoryManager {
         return $items;
     }
 
+    public function savePlayerInventory($player, $level, $sendMessage)
+    {
 
-        public function savePlayerInventory($player, $level) {
-        
         $data = new Config($this->plugin->getDataFolder() . $level->getName() . "/playerItems.yml", Config::YAML);
 
         $name = strtolower($player->getName());
@@ -72,10 +77,16 @@ class InventoryManager {
         $data->set($name, ["inv" => $inv]);
         $data->save();
 
-        $player->sendMessage($this->plugin->prefix . $this->plugin->messages["items-saved"]);
+        $playerData = $data->get($name);
+
+        if($sendMessage && !empty($playerData["inv"]))
+            $player->sendMessage($this->plugin->prefix . $this->plugin->messages["items-saved"]);
+
+        if($this->plugin->getConfig()->get("clear-on-quit")) $player->getInventory()->clearAll();
     }
 
-    public function restorePlayerInventory($player, $level) {
+    public function restorePlayerInventory($player, $level, $sendMessage)
+    {
         $data = new Config($this->plugin->getDataFolder() . $level->getFolderName() . "/playerItems.yml", Config::YAML);
 
         $name = strtolower($player->getName());
@@ -83,9 +94,10 @@ class InventoryManager {
         $playerData = $data->get($name);
 
         $items = $this->plugin->inventoryManager->deserializeInv($playerData["inv"]);
-        
+
         $player->getInventory()->setContents($items);
 
-        $player->sendMessage($this->plugin->prefix . $this->plugin->messages["items-restored"]);
+        if($sendMessage && !empty($playerData["inv"]))
+            $player->sendMessage($this->plugin->prefix . $this->plugin->messages["items-restored"]);
     }
 }

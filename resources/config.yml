@@ -10,10 +10,16 @@
 #                                                                                   #
 #                                                                                   #
 
-#prefix of the plugin messages
+#Prefix of the plugin messages
 prefix: "§8[§cSurvival§8]§r "
 
-#messages
+#Respawn in survival
+respawn-in-survival: true
+
+#Clear inventory upon exiting in a survival world.
+clear-on-quit: false
+
+#Messages
 items-saved: "§7Items salvos"
 items-restored: "§7Items restaurados"
 set-survival: "§7Mundo definido como survival: {level}"

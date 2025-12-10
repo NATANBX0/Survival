@@ -3,22 +3,30 @@
 namespace Survival;
 
 use pocketmine\plugin\PluginBase;
+use PSpell\Config;
 use Survival\Commands\ListSurvivalCommand;
+use Survival\Commands\LobbyCommand;
 use Survival\Commands\RemoveSurvivalCommand;
 use Survival\Commands\SetSurvivalCommand;
+use Survival\Commands\SurvivalCommand;
+use Survival\Events\DeathEvent;
 use Survival\Events\DisablePluginEvent;
 use Survival\Events\PlayerChangeWorldEvent;
-use Survival\Events\PlayerRespawnEvents;
-use Survival\Events\PlayerQuitEvents;
+use Survival\Events\RespawnEvent;
 use Survival\Utils\InventoryManager;
 
-class Main extends PluginBase {
+class Main extends PluginBase
+{
 
     public $inventoryManager;
 
     public $prefix;
 
     public $messages;
+
+    public $playerDeath;
+
+    public $players = [];
 
     public function onEnable()
     {
@@ -33,13 +41,19 @@ class Main extends PluginBase {
         /** @disregard */
         $this->getCommand("listsurvival")->setExecutor(new ListSurvivalCommand($this), $this);
 
+        $this->saveDefaultConfig();
+        $this->reloadConfig();
+
         $this->getServer()->getPluginManager()->registerEvents(new PlayerChangeWorldEvent($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new DisablePluginEvent($this), $this);
 
-        $this->getLogger()->info("Plugin habilitado com sucesso!");
+        $respawn = $this->getConfig()->get("respawn-in-survival");
+        if($respawn) {
+            $this->getServer()->getPluginManager()->registerEvents(new RespawnEvent($this), $this);
+            $this->getServer()->getPluginManager()->registerEvents(new DeathEvent($this), $this);
+        }
 
-        $this->saveDefaultConfig();
-        $this->reloadConfig();
+        $this->getLogger()->info("Plugin habilitado com sucesso!");
 
         $this->prefix = $this->getConfig()->get("prefix");
 
@@ -47,15 +61,16 @@ class Main extends PluginBase {
     }
 
 
-    public function deleteFolder($path) {
-        if(!is_dir($path)) return false;
+    public function deleteFolder($path)
+    {
+        if (!is_dir($path)) return false;
 
         $files = array_diff(scandir($path), ['.', '..']);
 
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $filePath = $path . DIRECTORY_SEPARATOR . $file;
 
-            if(is_dir($filePath)) {
+            if (is_dir($filePath)) {
                 $this->deleteFolder($filePath);
             } else {
                 unlink($filePath);

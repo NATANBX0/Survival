@@ -5,7 +5,6 @@ namespace Survival\Commands;
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
-use pocketmine\utils\Config;
 use pocketmine\Player;
 
 class SetSurvivalCommand implements CommandExecutor {

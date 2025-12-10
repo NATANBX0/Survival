@@ -4,6 +4,7 @@ namespace Survival\Events;
 
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\Listener;
+use pocketmine\Player;
 
 class PlayerChangeWorldEvent implements Listener {
 
@@ -20,23 +21,26 @@ class PlayerChangeWorldEvent implements Listener {
     public function onEntityLevelChange(EntityLevelChangeEvent $event) {
         $player = $event->getEntity();
 
+        if(!$player instanceof Player)
+            return;
+
         $levelOrigin = $event->getOrigin();
+        
+        $levelTarget = $event->getTarget();
+
+        if($levelOrigin->getFolderName() === $levelTarget->getFolderName())
+            return;
 
         $filePathOrigin = $this->plugin->getDataFolder() . $levelOrigin->getFolderName();
 
         if(file_exists($filePathOrigin)) {
-            $this->plugin->inventoryManager->savePlayerInventory($player, $levelOrigin);
+            $this->plugin->inventoryManager->savePlayerInventory($player, $levelOrigin, true);
         }
-
-        $levelTarget = $event->getTarget();
 
         $filePathTarget = $this->plugin->getDataFolder() . $levelTarget->getFolderName();
 
-        if($levelOrigin === $levelTarget)
-            return;
-
         if(file_exists($filePathTarget)) {
-            $this->plugin->inventoryManager->restorePlayerInventory($player, $levelTarget);
+            $this->plugin->inventoryManager->restorePlayerInventory($player, $levelTarget, true);
         }
     }
 }
