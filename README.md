@@ -3,6 +3,10 @@ This is a plugin focused on combining the use of different utilities available o
 
 > Worlds defined as survival will be referred to as worlds with the survival property.
 
+	
+> [!IMPORTANT]
+> This plugin is dependent on [Smartcommand](https://github.com/RajadorDev/SmartCommand/tree/pm-2.0.0).
+
 ## Exclusive utilities
 As a unique feature, survival mode allows players to save their items even when switching worlds, and it's possible to hold events in a way that prevents players from losing their items (for now, this can only be done by holding events in worlds other than the one defined as survival).
 

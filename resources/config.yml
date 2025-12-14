@@ -11,7 +11,7 @@
 #                                                                                   #
 
 #Prefix of the plugin messages
-prefix: "§8[§cSurvival§8]§r "
+prefix: "§8[§cSurvival§8]§r"
 
 #Respawn in survival
 respawn-in-survival: true
@@ -20,10 +20,21 @@ respawn-in-survival: true
 clear-on-quit: false
 
 #Messages
-items-saved: "§7Items salvos"
-items-restored: "§7Items restaurados"
-set-survival: "§7Mundo definido como survival: {level}"
-not-found: "§7O mundo §c {level} §7não foi econtrado"
-removed-survival: "§7O mundo §a{level} §7foi removido dos mundos survival"
-survival-list: "§7Mundos com a propiedade survival:§a {list}"
-no-survival-worlds: "§7Não existe nenhum mundo com a propiedade survival no momento"
+items-saved: "{prefix} §7Items salvos"
+items-restored: "{prefix} §7Items restaurados"
+set-survival: "{prefix} §7Mundo definido como survival: {level}"
+not-found: "{prefix} §7O mundo§c {level} §7não foi econtrado"
+removed-survival: "{prefix} §7O mundo §a{level}§7foi removido dos mundos survival"
+survival-list: "{prefix} §7Mundos com a propiedade survival:§a {list}"
+no-survival-worlds: "{prefix} §7Não existe nenhum mundo com a propiedade survival no momento"
+#home
+home-block: "{prefix} §7This is not a §csurvival§7 world"
+home-added: "{prefix} §7Home §a{home} §7added Successfully"
+home-with-the-same-name: "{prefix} §7You already have a home named:§c {home}"
+no-home: "{prefix} §cYou don't have any home"
+no-home-name-registered: "{prefix} §7You don't have a home registered as:§c {home}"
+no-home-with-this-name: "{prefix} §7You don't have any home named as:§c {home}"
+no-home-to-del: "{prefix} §7You don't have any home to delete!"
+home-deleted: "{prefix} §7Home §c{home} §7deleted Successfully"
+home-list: "{prefix} §7Homes registered: §a{homes}"
+teleported-to-home: "{prefix} §7Teleported to home: §a{home}"

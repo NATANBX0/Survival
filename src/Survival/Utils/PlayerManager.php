@@ -6,7 +6,7 @@ use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\utils\Config;
 
-class InventoryManager
+class PlayerManager
 {
 
     private $plugin;
@@ -69,35 +69,44 @@ class InventoryManager
     public function savePlayerInventory($player, $level, $sendMessage)
     {
 
-        $data = new Config($this->plugin->getDataFolder() . $level->getName() . "/playerItems.yml", Config::YAML);
-
+        $data = new Config($this->plugin->getDataFolder() . $level->getName() . "/playerData.yml", Config::YAML);
+        
         $name = strtolower($player->getName());
-
-        $inv = $this->plugin->inventoryManager->serializeInv($player->getInventory()->getContents());
-        $data->set($name, ["inv" => $inv]);
-        $data->save();
 
         $playerData = $data->get($name);
 
-        if($sendMessage && !empty($playerData["inv"]))
-            $player->sendMessage($this->plugin->prefix . $this->plugin->messages["items-saved"]);
+        if(!isset($playerData))
+            $playerData = [];
+
+        $inv = $this->plugin->playerManager->serializeInv($player->getInventory()->getContents());
+        $playerData["inv"] = $inv;
+        $data->set($name, $playerData);
+        $data->save();
+
+
+        if($sendMessage && !empty($playerData["inv"])) {
+            $message = str_replace(["{prefix}"], [$this->plugin->prefix], $this->plugin->messages["items-saved"]);
+            $player->sendMessage($message);
+        }
 
         if($this->plugin->getConfig()->get("clear-on-quit")) $player->getInventory()->clearAll();
     }
 
     public function restorePlayerInventory($player, $level, $sendMessage)
     {
-        $data = new Config($this->plugin->getDataFolder() . $level->getFolderName() . "/playerItems.yml", Config::YAML);
+        $data = new Config($this->plugin->getDataFolder() . $level->getFolderName() . "/playerData.yml", Config::YAML);
 
         $name = strtolower($player->getName());
 
         $playerData = $data->get($name);
 
-        $items = $this->plugin->inventoryManager->deserializeInv($playerData["inv"]);
+        $items = $this->plugin->playerManager->deserializeInv($playerData["inv"]);
 
         $player->getInventory()->setContents($items);
 
-        if($sendMessage && !empty($playerData["inv"]))
-            $player->sendMessage($this->plugin->prefix . $this->plugin->messages["items-restored"]);
+        if($sendMessage && !empty($playerData["inv"])) {
+            $message = str_replace(["{prefix}"], [$this->plugin->prefix], $this->plugin->messages["items-restored"]);
+            $player->sendMessage($message);
+        }
     }
 }
