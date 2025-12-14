@@ -1,33 +1,10 @@
 ---
 name: Survival
-version: 1.3.0
+version: 1.4.0
 main: Survival\Main
-description: Dont lose your itens in survival
+description: Survival All in one
 api: 2.0.0
 author: NATANBX0
 
-commands:
-  setsurvival:
-    description: define o mundo survival
-    permission: survival.set
-
-  rmsurvival:
-    description: remove o survival de um mundo
-    permission: survival.remove
-
-  listsurvival:
-    description: lista todos mundos aplicados com o survival
-    permission: survival.list
-
-permissions:
-  survival.set:
-    description: define o mundo survival
-    default: op
-
-  survival.remove:
-    description: remove o survival de um mundo
-    default: op
-
-  survival.list:
-    description: lista todos mundos aplicados com o survival
-    default: op
+depend:
+  - SmartCommand

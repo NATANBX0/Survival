@@ -34,13 +34,13 @@ class PlayerChangeWorldEvent implements Listener {
         $filePathOrigin = $this->plugin->getDataFolder() . $levelOrigin->getFolderName();
 
         if(file_exists($filePathOrigin)) {
-            $this->plugin->inventoryManager->savePlayerInventory($player, $levelOrigin, true);
+            $this->plugin->playerManager->savePlayerInventory($player, $levelOrigin, true);
         }
 
         $filePathTarget = $this->plugin->getDataFolder() . $levelTarget->getFolderName();
 
         if(file_exists($filePathTarget)) {
-            $this->plugin->inventoryManager->restorePlayerInventory($player, $levelTarget, true);
+            $this->plugin->playerManager->restorePlayerInventory($player, $levelTarget, true);
         }
     }
 }

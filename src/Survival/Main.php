@@ -3,22 +3,22 @@
 namespace Survival;
 
 use pocketmine\plugin\PluginBase;
-use PSpell\Config;
-use Survival\Commands\ListSurvivalCommand;
-use Survival\Commands\LobbyCommand;
-use Survival\Commands\RemoveSurvivalCommand;
-use Survival\Commands\SetSurvivalCommand;
+use Survival\Commands\DelHomeCommand;
+use Survival\Commands\HomeCommand;
+use Survival\Commands\SetHomeCommand;
+use Survival\Commands\SurvivalListSubCommand;
+use Survival\Commands\SurvivalRemoveSubCommand;
 use Survival\Commands\SurvivalCommand;
 use Survival\Events\DeathEvent;
 use Survival\Events\DisablePluginEvent;
 use Survival\Events\PlayerChangeWorldEvent;
 use Survival\Events\RespawnEvent;
-use Survival\Utils\InventoryManager;
+use Survival\Utils\PlayerManager;
 
 class Main extends PluginBase
 {
 
-    public $inventoryManager;
+    public $playerManager;
 
     public $prefix;
 
@@ -31,15 +31,11 @@ class Main extends PluginBase
     public function onEnable()
     {
         @mkdir($this->getDataFolder());
+        
+        $this->getServer()->getCommandMap()->register("survival", new SurvivalCommand($this));
+        $this->getServer()->getCommandMap()->register("home", new HomeCommand($this));
 
-        $this->inventoryManager = new InventoryManager($this);
-
-        /** @disregard */
-        $this->getCommand("setsurvival")->setExecutor(new SetSurvivalCommand($this));
-        /** @disregard */
-        $this->getCommand("rmsurvival")->setExecutor(new RemoveSurvivalCommand($this), $this);
-        /** @disregard */
-        $this->getCommand("listsurvival")->setExecutor(new ListSurvivalCommand($this), $this);
+        $this->playerManager = new PlayerManager($this);
 
         $this->saveDefaultConfig();
         $this->reloadConfig();
@@ -55,13 +51,13 @@ class Main extends PluginBase
 
         $this->getLogger()->info("Plugin habilitado com sucesso!");
 
-        $this->prefix = $this->getConfig()->get("prefix");
+        $this->prefix = $this->getConfig()->get("prefix", "§8[§cSurvival§8]§r");
 
         $this->messages = $this->getConfig()->getAll();
     }
 
 
-    public function deleteFolder($path)
+    public function deleteFolder(string $path)
     {
         if (!is_dir($path)) return false;
 
