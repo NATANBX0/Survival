@@ -6,28 +6,5 @@ description: Dont lose your itens in survival
 api: 2.0.0
 author: NATANBX0
 
-commands:
-  setsurvival:
-    description: define o mundo survival
-    permission: survival.set
-
-  rmsurvival:
-    description: remove o survival de um mundo
-    permission: survival.remove
-
-  listsurvival:
-    description: lista todos mundos aplicados com o survival
-    permission: survival.list
-
-permissions:
-  survival.set:
-    description: define o mundo survival
-    default: op
-
-  survival.remove:
-    description: remove o survival de um mundo
-    default: op
-
-  survival.list:
-    description: lista todos mundos aplicados com o survival
-    default: op
+depend:
+  - SmartCommand

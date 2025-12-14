@@ -22,7 +22,7 @@ class DisablePluginEvent implements Listener {
             $path = $this->plugin->getDataFolder() . $level->getFolderName();
             
             if(file_exists($path))
-                $this->plugin->inventoryManager->savePlayerInventory($player, $level, false);
+                $this->plugin->playerManager->savePlayerInventory($player, $level, false);
         }
     }
 }
