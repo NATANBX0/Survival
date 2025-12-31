@@ -90,8 +90,8 @@ class SurvivalRemoveSubCommand extends BaseSubCommand
         $this->plugin->deleteFolder($this->plugin->getDataFolder() . $level);
 
         $messageRemoved = str_replace(["{prefix}", "{level}"], [$this->plugin->prefix, $level], $this->plugin->messages["removed-survival"]);
-
-        $sender->sendMessage($this->plugin->prefix . $messageRemoved);
+ 
+        $sender->sendMessage($messageRemoved);
 
         return;
     }

@@ -5,6 +5,7 @@ namespace Survival\Events;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\utils\Config;
 
 class DeathEvent implements Listener {
     private $plugin;
@@ -23,7 +24,6 @@ class DeathEvent implements Listener {
     public function onPlayerRespawn(PlayerDeathEvent $event) {
 
         $player = $event->getPlayer();
-
         $level = $player->getLevel();
 
         if(file_exists($this->plugin->getDataFolder() . $level->getName())) {

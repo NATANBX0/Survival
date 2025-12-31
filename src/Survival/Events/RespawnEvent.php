@@ -5,6 +5,7 @@ namespace Survival\Events;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\utils\Config;
 
 class RespawnEvent implements Listener {
     private $plugin;
@@ -31,15 +32,24 @@ class RespawnEvent implements Listener {
 
         $level = $this->plugin->getServer()->getLevelByName($playerLevel);
 
-        if($level !== null) {
-            
-            if($level !== null) {
+        if(!is_null($level)) {
+            if($this->plugin->messages["respawn"]) {
                 $spawnPosition = $level->getSafeSpawn();
-
+                
                 $event->setRespawnPosition($spawnPosition);
-
+                
                 $player->setGamemode(0);
             }
+                
+                            
+            $name = strtolower($player->getName());
+            $data = new Config($this->plugin->getDataFolder() . $level->getFolderName() . "/playerData.yml", Config::YAML);
+
+            $playerData = $data->get($name, []);
+
+            $playerData["pos"] = "death";
+            $data->set($name, $playerData);
+            $data->save();
         }
     }
 }

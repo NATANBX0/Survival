@@ -42,13 +42,10 @@ class Main extends PluginBase
 
         $this->getServer()->getPluginManager()->registerEvents(new PlayerChangeWorldEvent($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new DisablePluginEvent($this), $this);
-
-        $respawn = $this->getConfig()->get("respawn-in-survival");
-        if($respawn) {
-            $this->getServer()->getPluginManager()->registerEvents(new RespawnEvent($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new DeathEvent($this), $this);
-        }
-
+        
+        $this->getServer()->getPluginManager()->registerEvents(new RespawnEvent($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new DeathEvent($this), $this);
+    
         $this->getLogger()->info("Plugin habilitado com sucesso!");
 
         $this->prefix = $this->getConfig()->get("prefix", "§8[§cSurvival§8]§r");

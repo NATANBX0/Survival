@@ -85,7 +85,7 @@ class SurvivalSetSubCommand extends BaseSubCommand
 
         $message = str_replace(["{prefix}", "{level}"], [$this->plugin->prefix, $level], $this->plugin->messages["set-survival"]);
 
-        $player->sendMessage($this->plugin->prefix . " " . $message);
+        $player->sendMessage($message);
         return;
     }
 }

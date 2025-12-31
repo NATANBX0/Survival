@@ -19,6 +19,9 @@ respawn-in-survival: true
 #Clear inventory upon exiting in a survival world.
 clear-on-quit: false
 
+#The player who enters survival mode will return to their last position.
+back-to-last-position: true
+
 #Messages
 items-saved: "{prefix} §7Items salvos"
 items-restored: "{prefix} §7Items restaurados"

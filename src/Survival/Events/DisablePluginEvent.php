@@ -4,6 +4,7 @@ namespace Survival\Events;
 
 use pocketmine\event\Listener;
 use pocketmine\event\plugin\PluginDisableEvent;
+use pocketmine\utils\Config;
 
 class DisablePluginEvent implements Listener {
 
@@ -21,8 +22,10 @@ class DisablePluginEvent implements Listener {
 
             $path = $this->plugin->getDataFolder() . $level->getFolderName();
             
-            if(file_exists($path))
+            if(file_exists($path)) {
                 $this->plugin->playerManager->savePlayerInventory($player, $level, false);
+                $this->plugin->playerManager->savePlayerPosition($player, $level);
+            }
         }
     }
 }

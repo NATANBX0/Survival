@@ -4,7 +4,10 @@ namespace Survival\Utils;
 
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
+use pocketmine\Player;
 use pocketmine\utils\Config;
+use pocketmine\level\Position;
+use pocketmine\math\Vector3;
 
 class PlayerManager
 {
@@ -73,7 +76,7 @@ class PlayerManager
         
         $name = strtolower($player->getName());
 
-        $playerData = $data->get($name);
+        $playerData = $data->get($name, []);
 
         if(!isset($playerData))
             $playerData = [];
@@ -98,7 +101,10 @@ class PlayerManager
 
         $name = strtolower($player->getName());
 
-        $playerData = $data->get($name);
+        $playerData = $data->get($name, []);
+
+        if(empty($playerData) || !isset($playerData["inv"]))
+            return;
 
         $items = $this->plugin->playerManager->deserializeInv($playerData["inv"]);
 
@@ -108,5 +114,51 @@ class PlayerManager
             $message = str_replace(["{prefix}"], [$this->plugin->prefix], $this->plugin->messages["items-restored"]);
             $player->sendMessage($message);
         }
+    }
+
+    public function savePlayerPosition($player, $level) {
+        $pos = [
+                "pos_x" => (int)$player->getX(),
+                "pos_y" => (int)$player->getY(),
+                "pos_z" => (int)$player->getZ(),
+                "level" => $level->getFolderName()
+        ];
+            
+        $name = strtolower($player->getName());
+
+        $data = new Config($this->plugin->getDataFolder() . $level->getFolderName() . "/playerData.yml", Config::YAML);
+
+        $playerData = $data->get($name, []);
+
+        if(empty($playerData))
+            return;
+
+        $playerData["pos"] = $pos;
+
+        $data->set($name, $playerData);
+        $data->save();
+    }
+
+    public function restorePlayerPosition($player, $level) {
+        if(!$this->plugin->messages["back-to-last-position"])
+            return;
+        
+        $data = new Config($this->plugin->getDataFolder() . $level->getFolderName() . "/playerData.yml", Config::YAML);
+
+        $name = strtolower($player->getName());
+
+        $playerData = $data->get($name, []);
+
+        if(empty($playerData) || !isset($playerData["pos"]))
+            return;
+
+        $pos = $playerData["pos"];
+
+        $x = $pos["pos_x"];
+        $y = $pos["pos_y"];
+        $z = $pos["pos_z"];
+        $levelData = $pos["level"];
+
+        $player->teleport(new Vector3($x, $y, $z));
     }
 }
